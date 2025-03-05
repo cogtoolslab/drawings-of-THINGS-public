@@ -1,0 +1,19 @@
+---
+title: "ThingsDrawingAnalyses"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(lmerTest)
+```
+
+```{r}
+df <- read_csv('../../data/things_draw_recog_similarity.csv')
+df$correct_numeric<- ifelse(df$correct=='TRUE', 1,0)
+df$similarity_score_centered<- df$similarity_score - mean(df$similarity_score)
+m1<- glmer(correct_numeric~ similarity_score_centered +(1+similarity_score_centered|uniqueID), data=df, family='binomial')
+summary(m1)
+
+```
